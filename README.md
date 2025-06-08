@@ -18,37 +18,50 @@ Two players control light cycles on a grid. Each cycle leaves a persistent trail
 
 ## How to Play
 
-1.  Open the `index.html` file in a web browser.
-2.  The game will display "Press Enter to Start".
-3.  Press the **Enter** key to begin the match.
+1.  Open the `index.html` file in a web browser on a desktop or mobile device.
+2.  The game will detect your input method:
+    *   **Desktop/Keyboard:** You will see instructions for keyboard controls. Press **Enter** to start.
+    *   **Mobile/Touch:** On-screen touch controls will be displayed. Tap the **Start** button to begin.
 
-### Controls:
+### Controls
 
+#### Mobile / Touch Controls
+*   **Player 1 (Blue/Cyan - Left D-Pad):**
+    *   Use the directional buttons (Up, Down, Left, Right) on the left side of the screen.
+*   **Player 2 (Yellow - Right D-Pad):**
+    *   Use the directional buttons (Up, Down, Left, Right) on the right side of the screen.
+*   **Game Actions (Center):**
+    *   **Start Button:** Begins the match.
+    *   **Restart Button:** Resets the game (can be used anytime).
+
+#### Desktop / Keyboard Controls
 *   **Player 1 (Blue/Cyan Cycle):**
-    *   **Turn Up**: ArrowUp
-    *   **Turn Down**: ArrowDown
-    *   **Turn Left**: ArrowLeft
-    *   **Turn Right**: ArrowRight
+    *   Turn Up: `ArrowUp`
+    *   Turn Down: `ArrowDown`
+    *   Turn Left: `ArrowLeft`
+    *   Turn Right: `ArrowRight`
 *   **Player 2 (Yellow Cycle):**
-    *   **Turn Up**: W
-    *   **Turn Down**: S
-    *   **Turn Left**: A
-    *   **Turn Right**: D
+    *   Turn Up: `W`
+    *   Turn Down: `S`
+    *   Turn Left: `A`
+    *   Turn Right: `D`
+*   **Game Actions:**
+    *   **Start Game:** `Enter`
+    *   **Restart Game:** `R` (can be used anytime)
 
-*   **Restart Game**:
-    *   Press the **R** key at any time (during gameplay or on the game over screen) to reset the game to the "Press Enter to Start" screen.
 
 ## Game Features
 
 *   2-Player local gameplay.
+*   Responsive design for desktop and mobile.
 *   Grid-based movement with 90-degree turns.
 *   Persistent light trails.
-*   Collision detection:
-    *   Arena walls
-    *   Self-trail collision
-    *   Opponent-trail collision
+*   Collision detection (arena walls, self-trail, opponent-trail).
 *   Win/Loss/Draw conditions.
-*   Simple restart mechanism.
+*   **Input Methods:**
+    *   Keyboard controls for desktop.
+    *   On-screen touch controls for mobile devices.
+*   Simple restart mechanism accessible via keyboard or touch.
 *   Visual display of cycles and trails on an HTML canvas.
 
 ## Files

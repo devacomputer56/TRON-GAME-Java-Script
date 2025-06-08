@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Tron Light Cycles</title>
     <style>
         body {
@@ -11,43 +11,168 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            justify-content: space-between; /* Distribute content vertically */
+            min-height: 100vh;
+            max-height: 100vh; /* Prevent pull-to-refresh issues if possible */
             margin: 0;
+            padding: 5px;
+            box-sizing: border-box;
             font-family: 'Consolas', 'Courier New', monospace;
-        }
-        canvas {
-            border: 2px solid #0ff;
-            background-color: #111; /* Darker grid background */
+            overflow: hidden; /* Prevent accidental scrollbars */
         }
         h1 {
             color: #0ff;
             text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+            font-size: 1.8em; /* Slightly smaller for mobile */
+            margin-bottom: 5px;
+            margin-top: 5px;
+            text-align: center;
+            flex-shrink: 0; /* Prevent h1 from shrinking too much */
+        }
+        #gameContainer {
+            width: 100%;
+            flex-grow: 1; /* Allow game container to take available vertical space */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom:5px;
+            min-height: 150px; /* Minimum height for the game area */
+        }
+        canvas {
+            border: 2px solid #0ff;
+            background-color: #111;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Scale canvas within its container bounds */
         }
         #gameStatus {
-            margin-top: 20px;
-            font-size: 1.2em;
+            margin-top: 5px;
+            font-size: 1em; /* Adjusted for mobile */
             color: #fff;
+            text-align: center;
+            flex-shrink: 0;
+            height: 1.2em; /* Reserve space */
         }
-        .controls {
-            margin-top: 15px;
+        .keyboard-controls-info {
+            margin-top: 5px;
             color: #ddd;
+            font-size: 0.8em;
+            text-align: center;
+            display: none; /* Hidden by default, shown for non-touch devices */
+            flex-shrink: 0;
+        }
+        .keyboard-controls-info p {
+            margin: 2px 0;
+        }
+
+        .touch-controls {
+            display: none; /* Hidden by default, shown by JS for touch devices */
+            width: 100%;
+            padding: 5px 0;
+            box-sizing: border-box;
+            flex-shrink: 0; /* Prevent controls from shrinking away */
+        }
+        .touch-controls .buttons-row {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .touch-controls .player-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 40px); /* Fixed size buttons */
+            grid-template-rows: repeat(2, 40px);
+            gap: 3px; /* Smaller gap */
+        }
+        .touch-controls .player-controls button {
+            background-color: rgba(68, 68, 68, 0.7); /* Semi-transparent */
+            color: #fff;
+            border: 1px solid #666;
+            border-radius: 5px;
+            font-size: 1.5em; /* Larger symbols */
+            line-height: 1; /* Center symbol better */
+            touch-action: manipulation; /* Improve touch responsiveness */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none; /* Prevent text selection on tap */
+            -webkit-tap-highlight-color: transparent; /* No highlight on tap */
+        }
+        /* D-pad button placements */
+        .p1-up { grid-column: 2; grid-row: 1; }
+        .p1-left { grid-column: 1; grid-row: 2; }
+        .p1-right { grid-column: 3; grid-row: 2; }
+        .p1-down { grid-column: 2; grid-row: 2; } /* Center bottom */
+
+        .p2-up { grid-column: 2; grid-row: 1; }
+        .p2-left { grid-column: 1; grid-row: 2; }
+        .p2-right { grid-column: 3; grid-row: 2; }
+        .p2-down { grid-column: 2; grid-row: 2; } /* Center bottom */
+
+        .touch-controls .game-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .touch-controls .game-actions button {
+            background-color: rgba(0, 119, 119, 0.7); /* Semi-transparent */
+            color: #0ff;
+            border: 1px solid #0aa;
+            border-radius: 5px;
+            padding: 8px 10px;
+            margin: 3px;
+            min-width: 90px;
             font-size: 0.9em;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
-        .controls p {
-            margin: 5px 0;
+
+        .player-controls.p1 button { background-color: rgba(0, 119, 119, 0.7); border-color: #00AAAA; color: #00FFFF;}
+        .player-controls.p2 button { background-color: rgba(119, 119, 0, 0.7); border-color: #AAAA00; color: #FFFF00;}
+
+        /* Active/feedback state for touch */
+        .touch-controls button:active {
+            filter: brightness(1.5);
         }
+
     </style>
 </head>
 <body>
     <h1>TRON LIGHT CYCLES</h1>
-    <canvas id="gameCanvas"></canvas>
-    <div id="gameStatus">Loading...</div>
-    <div class="controls">
-        <p>Player 1 (Blue): Arrow Keys</p>
-        <p>Player 2 (Yellow): WASD Keys</p>
-        <p>R: Restart Game</p>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
     </div>
+    <div id="gameStatus">Loading...</div>
+
+    <div class="keyboard-controls-info" id="keyboardControlsInfo">
+        <p>P1 (Blue): Arrows | P2 (Yellow): WASD</p>
+        <p>R: Restart | Enter: Start</p>
+    </div>
+
+    <div class="touch-controls" id="touchControlsContainer">
+        <div class="buttons-row">
+            <div class="player-controls p1" id="player1TouchControls">
+                <button class="p1-up" data-player="1" data-action="up">&#x2191;</button>
+                <button class="p1-left" data-player="1" data-action="left">&#x2190;</button>
+                <button class="p1-down" data-player="1" data-action="down">&#x2193;</button>
+                <button class="p1-right" data-player="1" data-action="right">&#x2192;</button>
+            </div>
+
+            <div class="game-actions">
+                <button id="touchStartButton">Start</button>
+                <button id="touchRestartButton">Restart</button>
+            </div>
+
+            <div class="player-controls p2" id="player2TouchControls">
+                <button class="p2-up" data-player="2" data-action="up">&#x2191;</button>
+                <button class="p2-left" data-player="2" data-action="left">&#x2190;</button>
+                <button class="p2-down" data-player="2" data-action="down">&#x2193;</button>
+                <button class="p2-right" data-player="2" data-action="right">&#x2192;</button>
+            </div>
+        </div>
+    </div>
+
     <script src="game.js"></script>
 </body>
 </html>
