@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tron Light Cycles</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0ff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+        canvas {
+            border: 2px solid #0ff;
+            background-color: #111; /* Darker grid background */
+        }
+        h1 {
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+        }
+        #gameStatus {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #fff;
+        }
+        .controls {
+            margin-top: 15px;
+            color: #ddd;
+            font-size: 0.9em;
+        }
+        .controls p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>TRON LIGHT CYCLES</h1>
+    <canvas id="gameCanvas"></canvas>
+    <div id="gameStatus">Loading...</div>
+    <div class="controls">
+        <p>Player 1 (Blue): Arrow Keys</p>
+        <p>Player 2 (Yellow): WASD Keys</p>
+        <p>R: Restart Game</p>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
